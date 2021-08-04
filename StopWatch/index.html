@@ -22,58 +22,57 @@
      * @constructor
      */
     function StopWatch() {
-    }
+        this.stopwatchSelector = document.getElementById('stop-watch');
+        this.pauseTimeSelector = document.getElementById('pauseTime');
+        this.isRunning = false;
+        this.currentCount = 0;
+        this.timer = null;
 
-    let pauseTimeSelector = document.getElementById('pauseTime');
-    StopWatch.stopwatchSelector = document.getElementById('stop-watch');
-    StopWatch.isRunning = false;
-    StopWatch.currentCount = 0;
+        this.startTime = () => {
+            let self = this;
+            self.timer = setInterval(function () {
+                if (self.isRunning) {
+                    self.stopwatchSelector.innerHTML = self.fancyTimeFormat(self.currentCount);
+                    self.currentCount += 1;
+                }
+            }, 1);
+        }
+        /**
+         * Below are helper functions needed for the applications
+         /**
+         * @param ms
+         * @returns {Promise<unknown>}
+         */
+        this.sleep = (ms) => {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
 
-
-    StopWatch.prototype.startTime = async function () {
-        while (StopWatch.constructor.isRunning) {
-            watch.constructor.stopwatchSelector.innerHTML = fancyTimeFormat(StopWatch.currentCount);
-            StopWatch.currentCount += 1;
-            await sleep(1);
+        /**
+         * To Display time in 00:00:00 format
+         * @param duration
+         * @returns {string}
+         */
+        this.fancyTimeFormat = (duration) => {
+            let hrs = ~~(duration / 3600);
+            let mins = ~~((duration % 3600) / 60);
+            let secs = ~~duration % 60;
+            let ret = "";
+            if (hrs > 0) {
+                ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+            }
+            ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+            ret += "" + secs;
+            return ret;
         }
     }
+
 
     const watch = new StopWatch();
-
-    watch.constructor.stopwatchSelector.innerHTML = '00:00:00';
-
-    /**
-     * Below are helper functions needed for the applications
-    /**
-     * @param ms
-     * @returns {Promise<unknown>}
-     */
-    function sleep(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    /**
-     * To Display time in 00:00:00 format
-     * @param duration
-     * @returns {string}
-     */
-    function fancyTimeFormat(duration) {
-        let hrs = ~~(duration / 3600);
-        let mins = ~~((duration % 3600) / 60);
-        let secs = ~~duration % 60;
-        let ret = "";
-        if (hrs > 0) {
-            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
-        }
-        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
-        ret += "" + secs;
-        return ret;
-    }
-
+    watch.stopwatchSelector.innerHTML = '00:00:00';
 
     function startTime() {
-        StopWatch.constructor.isRunning = true;
-        watch.constructor.prototype.startTime();
+        watch.isRunning = true;
+        watch.startTime();
     }
 
     /**
@@ -81,13 +80,13 @@
      * It has one bug. Challenge you to find the bug and fix it.
      */
     function changePauseButtonText() {
-        pauseTimeSelector.innerHTML = pauseTimeSelector.innerText === 'Pause' ? 'Resume' : 'Pause';
+        watch.pauseTimeSelector.innerHTML = watch.pauseTimeSelector.innerText === 'Pause' ? 'Resume' : 'Pause';
     }
 
     function pauseTime() {
-        if (StopWatch.currentCount > 0) {
-            if (StopWatch.constructor.isRunning === true) {
-                StopWatch.constructor.isRunning = false;
+        if (watch.currentCount > 0) {
+            if (watch.isRunning === true) {
+                watch.isRunning = false;
             } else {
                 startTime();
             }
@@ -96,10 +95,11 @@
     }
 
     function resetTime() {
-        if (StopWatch.currentCount > 0) {
-            StopWatch.constructor.isRunning = false;
-            StopWatch.currentCount = 0;
-            watch.constructor.stopwatchSelector.innerHTML = '00:00:00';
+        if (watch.currentCount > 0) {
+            watch.isRunning = false;
+            watch.currentCount = 0;
+            clearInterval(watch.timer);
+            watch.stopwatchSelector.innerHTML = '00:00:00';
         }
     }
 
@@ -127,3 +127,4 @@
 </style>
 </body>
 </html>
+
