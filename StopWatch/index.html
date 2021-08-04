@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta id="Viewport" name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Stopwatch</title>
+</head>
+<body>
+<div class="container">
+    <div class="main">
+        <h4>Stop Watch</h4>
+        <div id="stop-watch"></div>
+        <button id="startTime" onclick="startTime()">Start</button>
+        <button id="pauseTime" onclick="pauseTime()">Pause</button>
+        <button id="resetTime" onclick="resetTime()">Reset</button>
+    </div>
+</div>
+<script>
+    /**
+     * Stop watch constructor functions
+     * @constructor
+     */
+    function StopWatch() {
+    }
+
+    let pauseTimeSelector = document.getElementById('pauseTime');
+    StopWatch.stopwatchSelector = document.getElementById('stop-watch');
+    StopWatch.isRunning = false;
+    StopWatch.currentCount = 0;
+
+
+    StopWatch.prototype.startTime = async function () {
+        while (StopWatch.constructor.isRunning) {
+            watch.constructor.stopwatchSelector.innerHTML = fancyTimeFormat(StopWatch.currentCount);
+            StopWatch.currentCount += 1;
+            await sleep(1);
+        }
+    }
+
+    const watch = new StopWatch();
+
+    watch.constructor.stopwatchSelector.innerHTML = '00:00:00';
+
+    /**
+     * Below are helper functions needed for the applications
+    /**
+     * @param ms
+     * @returns {Promise<unknown>}
+     */
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    /**
+     * To Display time in 00:00:00 format
+     * @param duration
+     * @returns {string}
+     */
+    function fancyTimeFormat(duration) {
+        let hrs = ~~(duration / 3600);
+        let mins = ~~((duration % 3600) / 60);
+        let secs = ~~duration % 60;
+        let ret = "";
+        if (hrs > 0) {
+            ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+        }
+        ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+        ret += "" + secs;
+        return ret;
+    }
+
+
+    function startTime() {
+        StopWatch.constructor.isRunning = true;
+        watch.constructor.prototype.startTime();
+    }
+
+    /**
+     * Used to change the button text.
+     * It has one bug. Challenge you to find the bug and fix it.
+     */
+    function changePauseButtonText() {
+        pauseTimeSelector.innerHTML = pauseTimeSelector.innerText === 'Pause' ? 'Resume' : 'Pause';
+    }
+
+    function pauseTime() {
+        if (StopWatch.currentCount > 0) {
+            if (StopWatch.constructor.isRunning === true) {
+                StopWatch.constructor.isRunning = false;
+            } else {
+                startTime();
+            }
+            changePauseButtonText();
+        }
+    }
+
+    function resetTime() {
+        if (StopWatch.currentCount > 0) {
+            StopWatch.constructor.isRunning = false;
+            StopWatch.currentCount = 0;
+            watch.constructor.stopwatchSelector.innerHTML = '00:00:00';
+        }
+    }
+
+</script>
+<style>
+    .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #488b2d;
+    }
+
+    .container > .main {
+        text-align: center;
+        vertical-align: middle;
+        color: #ffffff;
+        font-size: 46px;
+    }
+
+    button {
+        padding: 10px;
+    }
+</style>
+</body>
+</html>
