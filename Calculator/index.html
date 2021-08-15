@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta id="Viewport" name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+    <meta content="utf-8" http-equiv="encoding">
+    <title>Calculator</title>
+</head>
+<body>
+<div class="container">
+    <div class="main">
+        <div id="result"></div>
+        <table id="calculator">
+            <tbody>
+            <tr>
+                <td>+</td>
+                <td>-</td>
+                <td>x</td>
+                <td>÷</td>
+            </tr>
+                <tr>
+                    <td>1</td>
+                    <td>2</td>
+                    <td>3</td>
+                    <td rowspan="4" id="equal">=</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>5</td>
+                    <td>6</td>
+                </tr>
+                <tr>
+                    <td>7</td>
+                    <td>8</td>
+                    <td>9</td>
+                </tr>
+            <tr>
+                <td>0</td>
+                <td>.</td>
+                <td id="remove">C</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<script>
+    function Calculator() {
+        this.currentButton = document.getElementById('calculator');
+        this.equalButton = document.getElementById('equal');
+        this.removeButton = document.getElementById('remove');
+        this.display = document.getElementById('result');
+        this.currentExpression = '';
+        let target = null;
+        let self = this;
+        this.currentButton.onclick = function (key) {
+            target = key.target.innerHTML;
+            if (target !== 'C' || target !== '=') {
+                self.currentExpression += target;
+                self.validateExpression(self.currentExpression);
+                self.display.innerHTML = self.currentExpression;
+            }
+        }
+
+        this.validateExpression = (expression) => {
+
+        }
+
+        this.removeButton.onclick = function () {
+            self.currentExpression = self.currentExpression.slice(0,-1)
+        }
+
+    }
+    const calculator = new Calculator();
+</script>
+<style>
+    #result {
+        background-color: #fff8d7;
+        color: #0a0a0a;
+        height: 50px;
+        padding: 10px;
+        width: 270px;
+        overflow: scroll;
+    }
+    .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #488b2d;
+    }
+
+    .container > .main {
+        text-align: center;
+        vertical-align: middle;
+        color: #ffffff;
+        font-size: 46px;
+    }
+    td {
+        padding: 10px;
+        width: 50px;
+        background-color: #fff8d7;
+        color: #0a0a0a;
+    }
+</style>
+</body>
+</html>
